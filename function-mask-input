@@ -1,0 +1,16 @@
+function add_inputmask_script() {
+    // Carregar o jQuery
+    wp_enqueue_script('jquery');
+    
+    // Carregar a biblioteca Inputmask
+    wp_enqueue_script('inputmask', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js', array('jquery'), '5.0.7', true);
+    
+    // Adicionar o script de máscara de telefone personalizado
+    wp_add_inline_script('inputmask', '
+        jQuery(document).ready(function($) {
+            $(\'input[type="tel"]\').inputmask("(99) 99999-9999");
+        });
+    ');
+}
+add_action('wp_enqueue_scripts', 'add_inputmask_script');
+  
