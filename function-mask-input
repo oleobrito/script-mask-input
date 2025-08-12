@@ -1,16 +1,37 @@
-function add_inputmask_script() {
-    // Carregar o jQuery
-    wp_enqueue_script('jquery');
-    
-    // Carregar a biblioteca Inputmask
-    wp_enqueue_script('inputmask', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js', array('jquery'), '5.0.7', true);
-    
-    // Adicionar o script de máscara de telefone personalizado
-    wp_add_inline_script('inputmask', '
-        jQuery(document).ready(function($) {
-            $(\'input[type="tel"]\').inputmask("(99) 99999-9999");
+//Mascara Input Telefone e Celular BR
+function aplicar_mascara_telefones_elementor() {
+    ?>
+    <!-- jQuery e jQuery Mask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+    jQuery(document).ready(function($) {
+        const campos = [
+            '#form-field-telefonecontato',
+            '#form-field-telefonetrabalhe',
+			'#form-field-telefoneparceiro',
+			'#telefonepopup'
+        ];
+
+        var maskBehavior = function(val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+        };
+
+        var options = {
+            onKeyPress: function(val, e, field, options) {
+                field.mask(maskBehavior.apply({}, arguments), options);
+            }
+        };
+
+        campos.forEach(function(selector) {
+            var $input = $(selector);
+            if ($input.length) {
+                $input.mask(maskBehavior, options);
+            }
         });
-    ');
+    });
+    </script>
+    <?php
 }
-add_action('wp_enqueue_scripts', 'add_inputmask_script');
-  
+add_action('wp_footer', 'aplicar_mascara_telefones_elementor');
